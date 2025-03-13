@@ -1,10 +1,11 @@
 import { defineConfig, devices } from "@playwright/test";
 import path from "path";
-import { VOTTING_EMAILS } from "./emails";
+import dotenv from "dotenv";
 
-/**
- * See https://playwright.dev/docs/test-configuration.
- */
+dotenv.config(); // Load .env variables
+
+const VOTTING_EMAILS = process.env.VOTTING_EMAILS?.split(",") || [];
+
 export default defineConfig({
   testDir: "./tests",
   fullyParallel: true,
@@ -14,7 +15,6 @@ export default defineConfig({
   reporter: "html",
   globalSetup: "./global-setup.ts",
   use: {
-    headless: false,
     trace: "on-first-retry",
   },
 
@@ -29,6 +29,6 @@ export default defineConfig({
         storageState: path.join(__dirname, `playwright/.auth/${email.replace(/[@.]/g, "_")}.json`),
       },
       dependencies: ["setup"],
-    }))
+    })),
   ],
 });

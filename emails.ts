@@ -1,10 +1,10 @@
 export const VOTTING_EMAILS = [
-    "dakota.spirited24@zonebmail.org",
+    /* "dakota.spirited24@zonebmail.org",
     "rowan.strong76@centerghost.com",
     "jules.swift84@oscartop.com",
     "riley.happy28@nowxmail.com",
     "addison.bright89@corekilo.org",
-    /* "ellison.shiny46@corekilo.net",
+    "ellison.shiny46@corekilo.net",
     "blake.strong1@scopesoprano.com",
     "taylor.spirited91@plusveil.com",
     "morgan.wise86@nowxmail.org",
@@ -21,7 +21,7 @@ export const VOTTING_EMAILS = [
     "indeedcard@creacionesninja.com",
     "Darcy25@creacionesninja.com",
     "riri1@creacionesninja.com",
-    "finalezeud75@creacionesninja.com",
+    "finalezeud75@creacionesninja.com", */
     "zedp23@creacionesninja.com",
     "isalamona@creacionesninja.com",
     "Zeuchi83@creacionesninja.com",
@@ -97,6 +97,6 @@ export const VOTTING_EMAILS = [
     "jazz@creacionesninja.com",
     "cristam@creacionesninja.com",
     "zowieshowy@creacionesninja.com",
-    "jhc48@creacionesninja.com" */
+    "jhc48@creacionesninja.com" 
   ];
   
