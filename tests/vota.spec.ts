@@ -1,34 +1,62 @@
 import { test, expect } from '@playwright/test';
-import { VOTTING_EMAILS } from '../emails';
+const VOTTING_EMAILS = process.env.VOTTING_EMAILS?.split(",") || [];
 import path from 'path';
 
 test.describe('Voting Test', () => {
   for (const email of VOTTING_EMAILS) {
     test(`Vote for Chiara using ${email}`, async ({ browser }) => {
       console.log(`Voting for Chiara using ${email}`);
-      const context = await browser.newContext({
-        storageState: path.join(__dirname, `../playwright/.auth/${email.replace(/[@.]/g, '_')}.json`),
-      });
-
-      const page = await context.newPage();
-      await page.goto('https://voting.mediasetinfinity.mediaset.it/sms.grandefratello.eliminazione.web/index.html');
-
-      for (let i = 0; i < 3; i++) {
-        await page.getByText('CHIARA').click();
-        await page.getByRole('button', { name: 'VOTA' }).click();
-        await page.waitForTimeout(4000);
-
-        if (i < 2) {
-          await page.getByRole('button', { name: 'Vota ancora' }).click();
+      const authFile = path.join(__dirname, `../playwright/.auth/${email.replace(/[@.]/g, '_')}.json`);
+      
+      try {
+        const context = await browser.newContext({
+          storageState: authFile,
+        });
+        
+        console.log(`Successfully loaded auth state from: ${authFile}`);
+        const page = await context.newPage();
+        
+        // Navigate and wait for the page to be fully loaded
+        await page.goto('https://voting.mediasetinfinity.mediaset.it/sms.grandefratello.eliminazione.web/index.html');
+        await page.waitForLoadState('networkidle');
+        
+        // Verify we're actually logged in
+        await page.getByText("CHI VUOI SALVARE?").waitFor({ state: 'visible' });
+        await page.getByText("CHIARA").waitFor({ state: 'visible' });
+        
+        let i = 0;
+        while (i < 3) {
+          await page.getByText("CHIARA").click();
+          await page.getByRole('button', { name: 'VOTA' }).click();
+          await page.waitForTimeout(6000);
+        
+          const voteAgainButton = await page.getByRole('button', { name: 'Vota ancora' }).isVisible();
+        
+          if (voteAgainButton) {
+            if (i < 2) {
+              await page.getByRole('button', { name: 'Vota ancora' }).click();
+            }
+            await page.waitForTimeout(4000);
+            i++;
+        
+          } else {
+            const message = await page.getByText('Hai utilizzato tutti i voti esprimibili per questa sessione.').isVisible();
+            if (message) {
+              console.log(`Voting completed for ${email}`);
+              break;
+            } else {
+              await expect(page.getByText('Attenzione!')).toBeVisible();
+              console.log(`Account ${email} already voted`);
+              break;
+            }
+          }
         }
+        
+        await context.close();
+      } catch (error) {
+        console.error(`Failed to run test for ${email}:`, error);
+        throw error;
       }
-
-      await page.waitForTimeout(4000);
-      await expect(page.getByText('Hai utilizzato tutti i voti esprimibili per questa sessione.')).toBeVisible();
-
-      console.log(`Voting completed for ${email}`);
-
-      await context.close();
     });
   }
 });
