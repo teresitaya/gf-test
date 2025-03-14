@@ -1,5 +1,4 @@
 # gf-test
-    `
 Automated testing project using Playwright.
 
 ## Prerequisites
