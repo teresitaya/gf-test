@@ -17,7 +17,7 @@ test.describe('Voting Test', () => {
         const page = await context.newPage();
         
         // Navigate and wait for the page to be fully loaded
-        await page.goto('https://voting.mediasetinfinity.mediaset.it/sms.grandefratello.eliminazione.web/index.html');
+        await page.goto(process.env.SITE_URL || '');
         await page.waitForLoadState('networkidle');
         
         // Verify we're actually logged in

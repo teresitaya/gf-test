@@ -21,6 +21,7 @@ mkdir -p playwright/.auth
 ```
 VOTTING_EMAILS="comma separated emails"
 PASSWORD = "password"
+SITE_URL = "secret url"
 ```
 
 ## Available Scripts

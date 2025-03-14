@@ -7,7 +7,7 @@ const authFile = (email: string) => path.join(__dirname, `../playwright/.auth/${
 export async function authenticateUser(page, email: string, password: string) {
   console.log(`Authenticating user ${email} with password ${password}`);
 
-  await page.goto("https://voting.mediasetinfinity.mediaset.it/sms.grandefratello.eliminazione.web/index.html");
+  await page.goto(process.env.SITE_URL);
   
   await page.waitForTimeout(5000);
 
@@ -25,7 +25,7 @@ export async function authenticateUser(page, email: string, password: string) {
       await page.getByPlaceholder("Password *").fill(password);
       await page.getByRole("button", { name: "Invia" }).click();
     
-      await page.waitForURL("https://voting.mediasetinfinity.mediaset.it/sms.grandefratello.eliminazione.web/index.html");
+      await page.waitForURL(process.env.SITE_URL);
       await expect(page.getByText("CHI VUOI SALVARE?")).toBeVisible();
     
       // Save authentication state
