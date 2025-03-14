@@ -8,8 +8,19 @@ Automated testing project using Playwright.
 
 ## Installation
 
+### Install dependencies
 ```bash
 npm install
+```
+### Create playwright directory
+
+```bash
+mkdir -p playwright/.auth
+```
+### Populate .env file
+```
+VOTTING_EMAILS="comma separated emails"
+PASSWORD = "password"
 ```
 
 ## Available Scripts
